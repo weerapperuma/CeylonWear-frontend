@@ -5,6 +5,8 @@ import {CategoryPage} from "../pages/category/CategoryPage.jsx";
 import {Search} from "../pages/search/Search.jsx";
 import ShopPage from "../pages/shop/ShopPage.jsx";
 import {SingleProduct} from "../pages/shop/product/SingleProduct.jsx";
+import {Login} from "../components/Login.jsx";
+import {Register} from "../components/Register.jsx";
 
 const router = createBrowserRouter([
     {
@@ -18,6 +20,14 @@ const router = createBrowserRouter([
         {path:"/shop/:id",element:<SingleProduct/>}
       ],
     },
+    {
+      path: "/login",
+      element: <Login/>,
+    },
+    {
+      path:"/register",
+        element:<Register/>
+    }
   ]);
 
   export default router;
