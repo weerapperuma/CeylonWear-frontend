@@ -1,13 +1,55 @@
 import React, {useState} from 'react'
-import { Link } from 'react-router-dom'
-import {useSelector} from "react-redux";
+import {Link, useNavigate} from 'react-router-dom'
+import {useDispatch, useSelector} from "react-redux";
 import CartModal from "../pages/shop/CartModal.jsx";
+import avatarImg from "../assets/avatar.png";
+import {useLoginUserMutation, useLogoutUserMutation} from "../redux/features/auth/authApi.js";
+import {logout} from "../redux/features/auth/authSlice.js";
 
 const NavBar = () => {
     const products = useSelector((state) => state.cart.products);
     const [isCartOpen,setisCartOpen] = useState(false);
     const handleCartToggle = () => {
         setisCartOpen(!isCartOpen);
+    }
+
+    //show user if logged in
+    const dispatch = useDispatch();
+    const {user} = useSelector((state) => state.auth);
+    const [logoutUser]=useLogoutUserMutation();
+    const navigate = useNavigate();
+
+    //dropdown menus
+    const[isDropDownOpen,setIsDropDownOpen] = useState(false);
+    const handleDropDownToggle = () => {
+        setIsDropDownOpen(!isDropDownOpen);
+    }
+
+    //admin drop down menus
+    const adminDropDownMenus = [
+        {label:"Dashboard" , path:"/dashboard/admin"},
+        {label:"Manage Items" , path:"/dashboard/manage-products"},
+        {label:"All Orders" , path:"/dashboard/manage-orders"},
+        {label:"Add New Post" , path:"/dashboard/add-new-post"},
+    ]
+    //use drop down menus
+    const userDropDownMenus = [
+        {label:"Dashboard" , path:"/dashboard"},
+        {label:"Profile" , path:"/dashboard/profile"},
+        {label:"Payments" , path:"/dashboard/payments"},
+        {label:"Orders" , path:"/dashboard/orders"},
+    ]
+
+    const dropDownMenus = user?.role === 'admin'?[...adminDropDownMenus]:[...userDropDownMenus]
+
+    const handleLogOut =async () =>{
+        try {
+            await logoutUser().unwrap();
+            dispatch(logout())
+            navigate("/")
+        }catch(err){
+            console.log('Failed to logout',err);
+        }
     }
 
     return (
@@ -37,9 +79,41 @@ const NavBar = () => {
                     </button>
                 </span>
                 <span>
-                    <Link to="login">
-                     <i className="ri-user-line"></i>
-                    </Link>
+                    {
+                        user && user ? (
+                            <>
+                                <img onClick={handleDropDownToggle} src={user?.profileImage || avatarImg} alt="" className="size-6
+                                rounded-full cursor-pointer"/>
+
+                                {
+                                    isDropDownOpen && (
+                                        <div className="absolute right-0 mt-3 p-4 w-48 bg-white
+                                        border border-gray-200 rounded-lg shadow-lg z-50">
+                                            <ul className="font-medium space-y-4 p-2">
+                                                {dropDownMenus.map((menu, index) => (
+                                                    <li key={index}>
+                                                        <Link onClick={()=>setIsDropDownOpen(false)}
+                                                              className='dropdown-items'
+                                                              to={menu.path}>
+                                                            {menu.label}
+                                                        </Link>
+                                                    </li>
+                                                ))}
+                                                <li>
+                                                    <Link onClick={handleLogOut} className='dropdown-items'>Logout</Link>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    )
+                                }
+                            </>
+                        ):(
+                            <Link to="login">
+                                <i className="ri-user-line"></i>
+                            </Link>
+                        )
+                    }
+
                 </span>
             </div>
         </nav>

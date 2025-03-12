@@ -24,6 +24,8 @@ export const Login = () => {
             const {token,user} = response;
             dispatch(setUser({user}));
             alert("Login Successful");
+            console.log(user);
+            console.log(user.profileImage);
             navigate("/");
         }catch (error) {
             setMessage('Please Provide a valid email and password');
