@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import React,{useEffect, useState} from "react";
 import products from "../../data/products.json";
-import ProductCards from "../shop/ProductCards.jsx";
+import ProductCards from "../shop/ProductCards";
 
 export const CategoryPage = () => {
     const{categoryName} = useParams();
@@ -14,7 +14,7 @@ export const CategoryPage = () => {
 
     useEffect(() => {
         window.scrollTo(0,0);
-    });
+    },[]);
     return (
         <>
             <section className='section__container bg-primary-light'>

@@ -1,8 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import OrderSummary from "./OrderSummary.jsx";
-import {removeFromCart, updateQuantity} from "../../redux/features/cart/CartSlice.js";
-// import { removeFromCart, updateQuantity } from '../../redux/features/cart/cartSlice';
+import {removeFromCart, updateQuantity} from "../../redux/features/cart/cartSlice.js";
 
 const CartModal = ({ products, isOpen, onClose }) => {
     const dispatch = useDispatch();
@@ -49,13 +48,13 @@ const CartModal = ({ products, isOpen, onClose }) => {
 
                                             <div className='flex flex-row md:justify-start justify-end items-center mt-2'>
                                                 <button
-                                                    onClick={() => handleQuantity('decrement', item.id)}
+                                                    onClick={() => handleQuantity('decrement', item._id)}
                                                     className='size-6 flex items-center justify-center px-1.5 rounded-full
                                                     bg-gray-200 text-gray-700 hover:bg-primary hover:text-white ml-8'
                                                 >-</button>
                                                 <span className='px-2 text-center mx-1'>{item.quantity}</span>
                                                 <button
-                                                    onClick={() => handleQuantity('increment', item.id)}
+                                                    onClick={() => handleQuantity('increment', item._id)}
                                                     className='size-6 flex items-center justify-center px-1.5 rounded-full
                                                     bg-gray-200 text-gray-700 hover:bg-primary hover:text-white'
                                                 >+</button>

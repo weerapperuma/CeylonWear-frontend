@@ -1,7 +1,8 @@
+import React from "react";
 import { Link } from 'react-router-dom';
-import RatingStars from "../../components/RatingStars.jsx";
+import RatingStars from "../../components/RatingStars";
 import {useDispatch} from "react-redux";
-import {addToCart} from "../../redux/features/cart/CartSlice.js";
+import {addToCart} from "../../redux/features/cart/cartSlice.js";
 
 const ProductCards = ({ products }) => {
     const dispatch = useDispatch();
