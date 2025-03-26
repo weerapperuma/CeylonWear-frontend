@@ -7,10 +7,11 @@ export const CategoryPage = () => {
     const{categoryName} = useParams();
     const [filteredProducts, setFilteredProducts] = useState([]);
 
-    useEffect(() => {
-        const filtered= products.filter((product) => product.category === categoryName.toLowerCase());
+    useEffect(() =>{
+        const filtered = products.filter((product) => product.category === categoryName.toLowerCase());
+
         setFilteredProducts(filtered);
-    }, [categoryName]);
+    } , [categoryName])
 
     useEffect(() => {
         window.scrollTo(0,0);

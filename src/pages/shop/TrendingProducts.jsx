@@ -1,11 +1,14 @@
 import React, {useState} from 'react'
 import ProductCards from "./ProductCards.jsx";
-import product from '../../data/products.json';
+import products from '../../data/products.json';
 const TrendingProducts = () => {
     const [visibleProducts,setVisibleProducts] = useState(8);
     const loadMoreProducts = () => {
         setVisibleProducts(pevCount => pevCount + 4);
     }
+
+    // const slicedProducts = products.slice(0, visibleProducts);
+    // console.log("Sliced Products in TrendingProducts:", slicedProducts);
 
     return (
         <section className='section__container product__container'>
@@ -14,13 +17,13 @@ const TrendingProducts = () => {
 
         {/*  product card  */}
             <div className='mt-12'>
-                <ProductCards products={product.slice(0,visibleProducts)}/>
+                <ProductCards products={products.slice(0,visibleProducts)}/>
             </div>
 
             {/*load more products button*/}
             <div className='product__btn'>
                 {
-                    visibleProducts < product.length && (
+                    visibleProducts < products.length && (
                         <button onClick={loadMoreProducts} className='btn'>Load More</button>
                     )
                 }

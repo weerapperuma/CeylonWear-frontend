@@ -3,7 +3,7 @@ import {useState} from "react";
 import ProductCards from "../shop/ProductCards.jsx";
 export const Search = () => {
     const [searchQuery,setSearchQuery] = useState('');
-    const [filteredProducts,setFilteredProducts] = useState([]);
+    const [filteredProducts,setFilteredProducts] = useState([productsData]);
 
     const handleSearch = () => {
         const query = searchQuery.toLowerCase()
