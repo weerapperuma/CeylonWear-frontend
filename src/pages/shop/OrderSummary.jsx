@@ -1,14 +1,48 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {clearCart} from "../../redux/features/cart/cartSlice.js";
-
+import { loadStripe } from "@stripe/stripe-js";
+import {getBaseURL} from "../../utils/baseURL.js";
 const OrderSummary = () => {
     const dispatch = useDispatch();
+    const {user} = useSelector(state => state.auth);
+
     const products = useSelector((store) => store.cart.products);
+
     const { selectedItems,totalPrice,tax,taxRate,grandTotal } = useSelector((store) => store.cart);
 
     const handleCart  =()=>{
         dispatch(clearCart())
+    }
+
+    // payment integration
+    const makePayment = async (e) => {
+        const stripe =  await loadStripe(import.meta.env.VITE_STRIPE_PK);
+        const body = {
+            products: products,
+            userId: user?._id
+        }
+
+        const headers = {
+            "Content-Type": "application/json"
+        }
+
+        const response = await fetch(`${getBaseURL()}/api/orders/create-checkout-session`, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(body)
+        })
+
+        const session =  await response.json()
+        console.log("session: ", session);
+
+        const result =  stripe.redirectToCheckout({
+            sessionId: session.id
+        })
+        console.log("Result:",  result)
+        if(result.error) {
+            console.log("Error:", result.error)
+        }
     }
 
     return (
@@ -30,7 +64,12 @@ const OrderSummary = () => {
                         <i className="ri-delete-bin-7-line"></i>
                     </button>
 
-                    <button className="bg-green-600 px-3 py-1.5 text-white mt-2 rounded-md flex justify-between items-center">
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            makePayment();
+                        }}
+                        className="bg-green-600 px-3 py-1.5 text-white mt-2 rounded-md flex justify-between items-center">
                         <span className="mr-2">Proceed Checkout</span>
                         <i className="ri-bank-card-line"></i>
                     </button>

@@ -17,7 +17,15 @@ const router = createBrowserRouter([
         {path: "/categories/:categoryName", element: <CategoryPage/>},
         {path:"/search",element:<Search/>},
         {path:"/shop" ,element:<ShopPage/>},
-        {path:"/shop/:id",element:<SingleProduct/>}
+        {path:"/shop/:id",element:<SingleProduct/>},
+          {
+              path: "/success",
+              element: <div>When Payment Succeed</div>
+          },
+          {
+              path: "/orders/:orderId",
+              element: <div>When Payment Succeed</div>
+          }
       ],
     },
     {
